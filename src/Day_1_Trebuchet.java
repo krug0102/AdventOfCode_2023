@@ -1,0 +1,68 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+public class Day_1_Trebuchet {
+
+    public static void main(String[] args) {
+        prompt();
+    }
+
+    public static void prompt() {
+        System.out.println("Please provide the calibration document.");
+        Scanner s = new Scanner(System.in);
+        String fileName = s.nextLine();
+        System.out.println("The sum of the calibration values is: " + getCalibrationValues(fileName));
+    }
+
+    /**
+     * reads a file line by line
+     * @param input The name of a text file
+     */
+    public static int getCalibrationValues(String input) {
+        int sum = 0;
+        try {
+            File inputFile = new File(input);
+            Scanner reader = new Scanner(inputFile);
+            while (reader.hasNextLine()) {
+                char[] line = reader.nextLine().toCharArray();
+                sum = sum + getNumbers(line);
+            }
+        } catch(FileNotFoundException e) {
+            System.out.println(e);
+        }
+
+        return sum;
+    }
+
+    /**
+     * takes a line of text as a character array and returns an integer that
+     * represents the two-digit number formed by the first and last digit in
+     * the line
+     *
+     * If there is only one number in the line, then both numbers are the same
+     * @param line
+     */
+    public static int getNumbers(char[] line) {
+        ArrayList<IndexValuePair> pairs = new ArrayList<>();
+        for (int i = 0; i < line.length; i++) {
+            if (Character.isDigit(line[i])) {
+                pairs.add(new IndexValuePair(i, Character.getNumericValue(line[i])));
+            }
+        }
+
+        return Integer.parseInt(pairs.getFirst().value + "" + pairs.getLast().value);
+    }
+
+    public static class IndexValuePair {
+        int index;
+        int value;
+
+        public IndexValuePair(int i, int v) {
+            this.index = i;
+            this.value = v;
+        }
+    }
+}
