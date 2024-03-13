@@ -56,6 +56,8 @@ public class Day_1_Trebuchet {
         return Integer.parseInt(pairs.getFirst().value + "" + pairs.getLast().value);
     }
 
+    //TODO: Don't fully utilize the IndexValuePair class, can
+    // refactor and remove the IndexValuePair class
     public static class IndexValuePair {
         int index;
         int value;
