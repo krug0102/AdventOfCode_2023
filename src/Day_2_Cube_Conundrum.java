@@ -18,7 +18,7 @@ public class Day_2_Cube_Conundrum {
         System.out.println("Please provide the game records.");
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
-        System.out.println("The sum of the calibration values is: " + sumOfIDs(fileName));
+        System.out.println("The sum of the game IDs that are possible is: " + sumOfIDs(fileName));
     }
 
     public static int sumOfIDs(String input) {
@@ -44,18 +44,12 @@ public class Day_2_Cube_Conundrum {
                 Game g = new Game(Integer.parseInt(numbers[0]));
 
                 for (int i = 1; i < numbers.length; i++) {
-                    if (colors[i].equals("red")) {
-                        g.redCount = g.redCount + Integer.parseInt(numbers[i]);
-                    }
-                    if (colors[i].equals("green")) {
-                        g.greenCount = g.greenCount + Integer.parseInt(numbers[i]);
-                    }
-                    if (colors[i].equals("blue")) {
-                        g.blueCount = g.blueCount + Integer.parseInt(numbers[i]);
-                    }
+                    if ((colors[i].equals("red") && Integer.parseInt(numbers[i]) > 12) | (colors[i].equals("green") && Integer.parseInt(numbers[i]) > 13) | (colors[i].equals("blue") && Integer.parseInt(numbers[i]) > 14)) {
+                        g.possible = false;
+                        break;
+                    } else
+                        g.possible = true;
                 }
-
-                g.isPossible();
 
                 games.add(g);
 
@@ -78,8 +72,6 @@ public class Day_2_Cube_Conundrum {
 
     public static class Game {
         int id;
-        int redCount, greenCount, blueCount;
-
         boolean possible;
 
         public Game() {}
@@ -88,18 +80,12 @@ public class Day_2_Cube_Conundrum {
             this.id = id;
         }
 
-        public Game(int id, int reds, int greens, int blues) {
-            this.id = id;
-            this.redCount = reds;
-            this.greenCount = greens;
-            this.blueCount = blues;
-            this.possible = false;
-        }
+        public String toString() {
+           if (this.possible) {
+               return "Game " + this.id + " is possible.";
+           } else
+               return "Game " + this.id + " is NOT possible";
 
-        public void isPossible() {
-            if (this.redCount <= 12 && this.greenCount <= 13 && this.blueCount <= 14) {
-                this.possible = true;
-            }
         }
-    }
+   }
 }

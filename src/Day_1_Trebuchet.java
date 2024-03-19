@@ -53,7 +53,7 @@ public class Day_1_Trebuchet {
             }
         }
 
-        return Integer.parseInt(pairs.getFirst().value + "" + pairs.getLast().value);
+        return Integer.parseInt(pairs.get(0).value + "" + pairs.get(pairs.size()-1).value);
     }
 
     //TODO: Don't fully utilize the IndexValuePair class, can
