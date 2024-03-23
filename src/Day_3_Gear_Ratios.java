@@ -7,6 +7,25 @@ import java.util.regex.Pattern;
 
 public class Day_3_Gear_Ratios {
 
+    /**
+     *  2D character array (char[][])
+     *  linear traversal of each line from the input
+     *
+     *  boolean valid = false;
+     *  StringBuilder number = new StringBuilder(); to create the numbers from characters
+     *  for loop {
+     *      if (digit)
+     *          look at adjacent characters
+     *          if (symbol is adjacent)
+     *              number.append(symbol)
+     *              valid = true
+     *      else
+     *          number = ""
+     *          valid = false
+     *
+     *  }
+     *
+     */
     public static void main(String[] args) {
 
     }
