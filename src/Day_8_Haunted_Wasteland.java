@@ -34,8 +34,8 @@ public class Day_8_Haunted_Wasteland {
                 String line = reader.nextLine();
                 if (firstLine) {
                     char[] x = line.toCharArray();
-                    for (int i = 0; i < x.length; i++) {
-                        directions.add(x[i]);
+                    for (char c : x) {
+                        directions.add(c);
                     }
                     firstLine = false;
                 }
@@ -60,13 +60,14 @@ public class Day_8_Haunted_Wasteland {
 
     public static int calculateSteps(Node rootNode, int direction){
         int result = 0;
-        if (rootNode.name == "ZZZ") {
+        System.out.println(direction);
+        if (rootNode.name.equals("ZZZ")) {
             return 0;
         } else {
-            if (directions.get(direction) == 'L') {
-                result = 1 + calculateSteps(nodes.get(rootNode.leftChild), directions.get(direction+1));
-            } else if (directions.get(direction) == 'R') {
-                result = 1 + calculateSteps(nodes.get(rootNode.rightChild), directions.get(direction+1));
+            if (directions.get(direction % directions.size()) == 'L') {
+                result = 1 + calculateSteps(nodes.get(rootNode.leftChild), direction+1 % directions.size());
+            } else if (directions.get(direction % directions.size()) == 'R') {
+                result = 1 + calculateSteps(nodes.get(rootNode.rightChild), direction+1 % directions.size());
             }
         }
         return result;
