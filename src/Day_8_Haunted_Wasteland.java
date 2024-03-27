@@ -10,8 +10,6 @@ public class Day_8_Haunted_Wasteland {
     static HashMap<String, Node> nodes = new HashMap<>();
     static ArrayList<Character> directions = new ArrayList<>();
 
-
-    //TODO: This problem lends itself to being recursive, but I can't figure it out right now.
     public static void main(String[] args) {
         prompt();
     }
@@ -23,7 +21,6 @@ public class Day_8_Haunted_Wasteland {
     }
 
     public static int part1(String fileName) {
-        int stepCount;
         boolean firstLine = true;
 
         try {
@@ -53,11 +50,28 @@ public class Day_8_Haunted_Wasteland {
         }
 
 
-        stepCount = calculateSteps(nodes.get("AAA"), 0);
 
-        return stepCount;
+        Node n = nodes.get("AAA");
+        int steps = 0;
+
+        while (!n.equals(nodes.get("ZZZ"))) {
+            if (directions.get(steps % directions.size()) == 'L') {
+                n = nodes.get(n.leftChild);
+            }
+            if (directions.get(steps % directions.size()) == 'R') {
+                n = nodes.get(n.rightChild);
+            }
+            steps++;
+        }
+
+
+        //stepCount = calculateSteps(nodes.get("AAA"), 0);
+
+        return steps;
     }
 
+
+    // Found a way to calculate the number of steps using a while loop
     public static int calculateSteps(Node rootNode, int direction){
         int result = 0;
         System.out.println(direction);
