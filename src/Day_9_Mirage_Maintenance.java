@@ -36,7 +36,9 @@ public class Day_9_Mirage_Maintenance {
                         .mapToInt(Integer::parseInt)
                         .toArray();
 
-                sum = sum + nextValue(historyValues);
+                System.out.println(sum);
+                sum = sum + nextValue(historyValues, historyValues[historyValues.length - 1]);
+                System.out.println(sum);
             }
 
 
@@ -47,37 +49,23 @@ public class Day_9_Mirage_Maintenance {
         return sum;
     }
 
-    public static int nextValue(int[] values) {
-        System.out.println(values.length);
-        ArrayList<int[]> sequences = new ArrayList<>();
-        sequences.add(values);
-        while (!arrayOfZeros(values)) {
-            int[] difference = new int[values.length-1];
-            for (int i = 0; i < difference.length - 1; i++) {
-                difference[i] = values[i+1] - values[i];
+    public static int nextValue(int[] sequence, int result) {
+        if (arrayOfZeros(sequence)) {
+            return 0;
+        } else {
+            int[] differences = new int[sequence.length - 1];
+            for (int i = 0; i < differences.length; i++) {
+                Arrays.fill(differences, sequence[i + 1] - sequence[i]);
             }
-            System.out.println(difference.length);
-
-            sequences.add(difference);
-            values = Arrays.copyOf(difference, difference.length);
+            System.out.println(Arrays.toString(differences));
+            System.out.println(result);
+            return result + nextValue(differences, result + differences[differences.length - 1]);
         }
-
-
-        for (int i = sequences.size() - 2; i > 0; i--) {
-            int[] x = sequences.get(i);
-            int[] y = sequences.get(i+1);
-
-            x[x.length-1] = x[x.length-2] + y[y.length-1];
-        }
-
-        int[] x = sequences.get(0);
-
-        return x[x.length-1];
     }
 
     public static boolean arrayOfZeros(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != 0) {
+        for (int j : arr) {
+            if (j != 0) {
                 return false;
             }
         }
