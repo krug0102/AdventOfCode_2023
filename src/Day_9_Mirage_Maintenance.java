@@ -17,11 +17,11 @@ public class Day_9_Mirage_Maintenance {
     public static void prompt() {
         System.out.println("Please provide the history report.");
         Scanner s = new Scanner(System.in);
-        System.out.println("The sum of the FORWARD extrapolated values from the history report is " + part1(s.nextLine()));
+        String fileName = s.nextLine();
 
-        int[] x = new int[] {10, 13, 16, 21, 30, 45};
-        System.out.println(previousValue(x, x[0]));
-        //System.out.println("The sum of the BACKWARD extrapolated values from the history report is " + part2(s.nextLine()));
+        System.out.println("The sum of the FORWARD extrapolated values from the history report is " + part1(fileName));
+
+        System.out.println("The sum of the BACKWARD extrapolated values from the history report is " + part2(fileName));
     }
 
     public static int part1(String fileName) {
@@ -91,8 +91,6 @@ public class Day_9_Mirage_Maintenance {
     }
 
 
-    //TODO: Doesn't get the right answer for the example.
-    // The subtraction might be in the wrong order.
     public static int previousValue(int[] sequence, int result) {
         if (arrayOfZeros(sequence)) {
             return 0;
