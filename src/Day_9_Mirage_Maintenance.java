@@ -17,10 +17,14 @@ public class Day_9_Mirage_Maintenance {
     public static void prompt() {
         System.out.println("Please provide the history report.");
         Scanner s = new Scanner(System.in);
-        System.out.println("The sum of the extrapolated values from the history report is " + sumExtrapolatedValues(s.nextLine()));
+        System.out.println("The sum of the FORWARD extrapolated values from the history report is " + part1(s.nextLine()));
+
+        int[] x = new int[] {10, 13, 16, 21, 30, 45};
+        System.out.println(previousValue(x, x[0]));
+        //System.out.println("The sum of the BACKWARD extrapolated values from the history report is " + part2(s.nextLine()));
     }
 
-    public static int sumExtrapolatedValues(String fileName) {
+    public static int part1(String fileName) {
         int sum = 0;
 
         try {
@@ -29,16 +33,41 @@ public class Day_9_Mirage_Maintenance {
 
             while (reader.hasNextLine()) {
                 String line = reader.nextLine();
-                int[] historyValues = Pattern.compile("(\\d+)")
+                int[] historyValues = Pattern.compile("(-?\\d+)")
                         .matcher(line)
                         .results()
                         .map(MatchResult::group)
                         .mapToInt(Integer::parseInt)
                         .toArray();
 
-                System.out.println(sum);
                 sum = sum + nextValue(historyValues, historyValues[historyValues.length - 1]);
-                System.out.println(sum);
+            }
+
+
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
+
+        return sum;
+    }
+
+    public static int part2(String fileName) {
+        int sum = 0;
+
+        try {
+            File inputFile = new File(fileName);
+            Scanner reader = new Scanner(inputFile);
+
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                int[] historyValues = Pattern.compile("(-?\\d+)")
+                        .matcher(line)
+                        .results()
+                        .map(MatchResult::group)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                sum = sum + previousValue(historyValues, historyValues[0]);
             }
 
 
@@ -55,11 +84,24 @@ public class Day_9_Mirage_Maintenance {
         } else {
             int[] differences = new int[sequence.length - 1];
             for (int i = 0; i < differences.length; i++) {
-                Arrays.fill(differences, sequence[i + 1] - sequence[i]);
+                differences[i] = sequence[i+1] - sequence[i];
             }
-            System.out.println(Arrays.toString(differences));
-            System.out.println(result);
-            return result + nextValue(differences, result + differences[differences.length - 1]);
+            return result + nextValue(differences, differences[differences.length - 1]);
+        }
+    }
+
+
+    //TODO: Doesn't get the right answer for the example.
+    // The subtraction might be in the wrong order.
+    public static int previousValue(int[] sequence, int result) {
+        if (arrayOfZeros(sequence)) {
+            return 0;
+        } else {
+            int[] differences = new int[sequence.length - 1];
+            for (int i = 0; i < differences.length; i++) {
+                differences[i] = sequence[i+1] - sequence[i];
+            }
+            return result - previousValue(differences, differences[0]);
         }
     }
 
