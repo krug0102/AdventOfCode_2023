@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 public class Day_9_Mirage_Maintenance {
 
-
-    //TODO: Seems recursive, but also seems like it could be done in a well-designed for loop
     public static void main(String[] args) {
         prompt();
     }
@@ -78,7 +76,7 @@ public class Day_9_Mirage_Maintenance {
         return sum;
     }
 
-    public static int nextValue(int[] sequence, int result) {
+    public static int nextValue(int[] sequence, int lastElementInSequence) {
         if (arrayOfZeros(sequence)) {
             return 0;
         } else {
@@ -86,12 +84,12 @@ public class Day_9_Mirage_Maintenance {
             for (int i = 0; i < differences.length; i++) {
                 differences[i] = sequence[i+1] - sequence[i];
             }
-            return result + nextValue(differences, differences[differences.length - 1]);
+            return lastElementInSequence + nextValue(differences, differences[differences.length - 1]);
         }
     }
 
 
-    public static int previousValue(int[] sequence, int result) {
+    public static int previousValue(int[] sequence, int firstElementInSequence) {
         if (arrayOfZeros(sequence)) {
             return 0;
         } else {
@@ -99,7 +97,7 @@ public class Day_9_Mirage_Maintenance {
             for (int i = 0; i < differences.length; i++) {
                 differences[i] = sequence[i+1] - sequence[i];
             }
-            return result - previousValue(differences, differences[0]);
+            return firstElementInSequence - previousValue(differences, differences[0]);
         }
     }
 

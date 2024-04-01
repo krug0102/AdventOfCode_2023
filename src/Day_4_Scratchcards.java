@@ -15,10 +15,10 @@ public class Day_4_Scratchcards {
         System.out.println("Please provide the scratchcards.");
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
-        System.out.println("The scratchcards are worth " + scratchcards(fileName) + " points");
+        System.out.println("The scratchcards are worth " + part1(fileName) + " points");
     }
 
-    public static int scratchcards(String fileName) {
+    public static int part1(String fileName) {
         int sum = 0;
         try {
             File inputFile = new File(fileName);

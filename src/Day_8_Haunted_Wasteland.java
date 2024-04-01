@@ -17,7 +17,8 @@ public class Day_8_Haunted_Wasteland {
     public static void prompt() {
         System.out.println("Please provide the desert maps.");
         Scanner s = new Scanner(System.in);
-        System.out.println("Starting from AAA, it takes " + part1(s.nextLine()) + " steps to reach ZZZ.");
+        String fileName = s.nextLine();
+        System.out.println("Starting from AAA, it takes " + part1(fileName) + " steps to reach ZZZ.");
     }
 
     public static int part1(String fileName) {
@@ -65,26 +66,7 @@ public class Day_8_Haunted_Wasteland {
         }
 
 
-        //stepCount = calculateSteps(nodes.get("AAA"), 0);
-
         return steps;
-    }
-
-
-    // Found a way to calculate the number of steps using a while loop
-    public static int calculateSteps(Node rootNode, int direction){
-        int result = 0;
-        System.out.println(direction);
-        if (rootNode.name.equals("ZZZ")) {
-            return 0;
-        } else {
-            if (directions.get(direction % directions.size()) == 'L') {
-                result = 1 + calculateSteps(nodes.get(rootNode.leftChild), direction+1 % directions.size());
-            } else if (directions.get(direction % directions.size()) == 'R') {
-                result = 1 + calculateSteps(nodes.get(rootNode.rightChild), direction+1 % directions.size());
-            }
-        }
-        return result;
     }
 
 

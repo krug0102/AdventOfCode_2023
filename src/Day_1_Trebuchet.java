@@ -14,14 +14,14 @@ public class Day_1_Trebuchet {
         System.out.println("Please provide the calibration document.");
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
-        System.out.println("The sum of the calibration values is: " + getCalibrationValues(fileName));
+        System.out.println("The sum of the calibration values is: " + part1(fileName));
     }
 
     /**
      * reads a file line by line
      * @param input The name of a text file
      */
-    public static int getCalibrationValues(String input) {
+    public static int part1(String input) {
         int sum = 0;
         try {
             File inputFile = new File(input);

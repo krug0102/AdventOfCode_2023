@@ -18,13 +18,13 @@ public class Day_6_Boat_Races {
         Scanner s = new Scanner(System.in);
 
         String fileName = s.nextLine();
-        System.out.println("The product of the number of ways to beat the records is: "+ recordsProduct(fileName));
+        System.out.println("The product of the number of ways to beat the records is: "+ part1(fileName));
 
-        System.out.println("There are " + recordsProduct2(fileName) + " number of ways to beat the one, long race.");
+        System.out.println("There are " + part2(fileName) + " number of ways to beat the one, long race.");
     }
 
 
-    public static int recordsProduct(String fileName) {
+    public static int part1(String fileName) {
         int product = 1;
         ArrayList<Integer> numbers = new ArrayList<>();
 
@@ -70,8 +70,7 @@ public class Day_6_Boat_Races {
         return numberOfRecordsBeat;
     }
 
-    public static long recordsProduct2(String fileName) {
-        long product = 1;
+    public static long part2(String fileName) {
         ArrayList<String> numbers = new ArrayList<>();
 
         try {
@@ -100,10 +99,10 @@ public class Day_6_Boat_Races {
             record.append(numbers.get(i+(numbers.size()/2)));
         }
 
-       return recordsBeat2(Long.parseLong(String.valueOf(time)), Long.parseLong(String.valueOf(record)));
+       return waysToBeatRecord(Long.parseLong(String.valueOf(time)), Long.parseLong(String.valueOf(record)));
     }
 
-    public static long recordsBeat2(long time, long record) {
+    public static long waysToBeatRecord(long time, long record) {
         long numberOfRecordsBeat = 0;
         for (int i = 0; i < time; i++) {
             long travelTime = time - i;

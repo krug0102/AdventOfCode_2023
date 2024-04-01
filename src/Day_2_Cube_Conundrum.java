@@ -18,10 +18,10 @@ public class Day_2_Cube_Conundrum {
         System.out.println("Please provide the game records.");
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
-        System.out.println("The sum of the game IDs that are possible is: " + sumOfIDs(fileName));
+        System.out.println("The sum of the game IDs that are possible is: " + part1(fileName));
     }
 
-    public static int sumOfIDs(String input) {
+    public static int part1(String input) {
         int sum = 0;
         ArrayList<Game> games = new ArrayList<>();
         try {
