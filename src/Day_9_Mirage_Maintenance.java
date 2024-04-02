@@ -76,7 +76,7 @@ public class Day_9_Mirage_Maintenance {
         return sum;
     }
 
-    public static int nextValue(int[] sequence, int lastElementInSequence) {
+    public static int nextValue(int[] sequence, int valueOfLastElement) {
         if (arrayOfZeros(sequence)) {
             return 0;
         } else {
@@ -84,12 +84,12 @@ public class Day_9_Mirage_Maintenance {
             for (int i = 0; i < differences.length; i++) {
                 differences[i] = sequence[i+1] - sequence[i];
             }
-            return lastElementInSequence + nextValue(differences, differences[differences.length - 1]);
+            return valueOfLastElement + nextValue(differences, differences[differences.length - 1]);
         }
     }
 
 
-    public static int previousValue(int[] sequence, int firstElementInSequence) {
+    public static int previousValue(int[] sequence, int valueOfFirstElement) {
         if (arrayOfZeros(sequence)) {
             return 0;
         } else {
@@ -97,7 +97,7 @@ public class Day_9_Mirage_Maintenance {
             for (int i = 0; i < differences.length; i++) {
                 differences[i] = sequence[i+1] - sequence[i];
             }
-            return firstElementInSequence - previousValue(differences, differences[0]);
+            return valueOfFirstElement - previousValue(differences, differences[0]);
         }
     }
 
