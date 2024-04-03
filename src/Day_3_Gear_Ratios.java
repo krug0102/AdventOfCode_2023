@@ -4,29 +4,11 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 public class Day_3_Gear_Ratios {
 
-    /**
-     *  2D character array (char[][])
-     *  linear traversal of each line from the input
-     *
-     *  boolean valid = false;
-     *  StringBuilder number = new StringBuilder(); to create the numbers from characters
-     *  for loop {
-     *      if (digit)
-     *          look at adjacent characters
-     *          if (symbol is adjacent)
-     *              number.append(symbol)
-     *              valid = true
-     *      else
-     *          number = ""
-     *          valid = false
-     *
-     *  }
-     *
-     */
 
     // Answer from example should be 4361
     public static void main(String[] args) {
@@ -58,6 +40,13 @@ public class Day_3_Gear_Ratios {
         }
 
 
+        //TODO:
+        // Misses 328 on line 32
+        // Misses 383 on line 37
+        // Misses 963 on line 60
+        // Seems to miss engine parts at the very end of a line even if they are adjacent and doesn't even build the number
+        // Through 60 lines, haven't had a false-positive
+
         boolean valid = false;
         StringBuilder number = new StringBuilder();
         for (int i = 0; i < engineSchematic.size(); i++) { // traverse through all arrays
@@ -70,6 +59,7 @@ public class Day_3_Gear_Ratios {
                     }
                 } else {
                     if (valid) {
+                        System.out.println(number);
                         sum += Integer.parseInt(String.valueOf(number));
                         number = new StringBuilder();
                         valid = false;
