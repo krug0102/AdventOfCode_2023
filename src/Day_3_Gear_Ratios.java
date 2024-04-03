@@ -27,6 +27,8 @@ public class Day_3_Gear_Ratios {
      *  }
      *
      */
+
+    // Answer from example should be 4361
     public static void main(String[] args) {
         prompt();
     }
@@ -63,12 +65,11 @@ public class Day_3_Gear_Ratios {
             for (int j = 0; j < line.length; j++) { // traverse through a singe array
                 if (Character.isDigit(line[j])) {
                     number.append(line[j]);
-                    if (hasAdjacentSymbol2(i, j, engineSchematic)) {
+                    if (hasAdjacentSymbol(i, j, engineSchematic)) {
                         valid = true;
                     }
                 } else {
                     if (valid) {
-                        System.out.println(number);
                         sum += Integer.parseInt(String.valueOf(number));
                         number = new StringBuilder();
                         valid = false;
@@ -87,41 +88,28 @@ public class Day_3_Gear_Ratios {
     }
 
     public static boolean hasAdjacentSymbol(int i, int j, ArrayList<char[]> schematic) {
-        for (int y = (i - 1); y < (i + 1); y++) {
-            System.out.println(y);
-            if (y >= 0 && y < schematic.size()) {
-                for (int x = (j - 1); x < (j + 1); x++) {
-                    if (x >= 0 && x < schematic.get(y).length) {
-                        char[] line = schematic.get(y);
-                        if (Pattern.matches("[^a-zA-Z0-9.\\n]", String.valueOf(line[x]))) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public static boolean hasAdjacentSymbol2(int i, int j, ArrayList<char[]> schematic) {
         // (j, i) = (x,y) of number
 
         //  . . .    (x-1, y-1)  (x, y-1)  (x+1, y-1)
         //  . x .    (x-1, y)    (x,y)     (x+1, y)
         //  . . .    (x-1, y+1)  (x, y+1)  (x+1, y+1)
 
-        for (int y = i - 1; y < i + 1; y++) {
-            for (int x = j - 1; x < j + 1; x++) {
-                if (y >= 0 && y < schematic.size()) {
-                    if (x >= 0 && x < schematic.get(y).length) {
-                        char[] line = schematic.get(y);
-                        if (Pattern.matches("[a-zA-Z0-9.\\n]", String.valueOf(line[x]))) {
+        for (int y = -1; y < 2; y++) {
+            for (int x = -1; x < 2; x++) {
+                int xdiff = j + y;
+                int ydiff = i + x;
+                if (ydiff >= 0 && ydiff < schematic.size()) {
+                    if (xdiff >= 0 && xdiff < schematic.get(ydiff).length) {
+                        char[] line = schematic.get(ydiff);
+                        if (Pattern.matches("[^a-zA-Z0-9.\\n]", String.valueOf(line[xdiff]))) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
+
 }
