@@ -21,9 +21,9 @@ public class Day_5_Seeds {
     }
 
 
-    public static int part1(String fileName) {
-        int minLocation = Integer.MAX_VALUE;
-        ArrayList<int[]> almanac = new ArrayList<>();
+    public static long part1(String fileName) {
+        long minLocation = Long.MAX_VALUE;
+        ArrayList<long[]> almanac = new ArrayList<>();
         StringJoiner fileAsString = new StringJoiner(" ");
 
         try {
@@ -42,30 +42,29 @@ public class Day_5_Seeds {
 
         String[] splitString = String.valueOf(fileAsString).split("([a-z]+-to-[a-z]+)? ?[a-z]+:");
 
-
-        int[] initialSeeds = Pattern.compile("(\\d+)")
+        long[] initialSeeds = Pattern.compile("(\\d+)")
                 .matcher(splitString[1])
                 .results()
                 .map(MatchResult::group)
-                .mapToInt(Integer::parseInt)
+                .mapToLong(Long::parseLong)
                 .toArray();
 
         for (int i = 2; i < splitString.length; i++) {
-            int[] arr = Pattern.compile("(\\d+)")
+            long[] arr = Pattern.compile("(\\d+)")
                     .matcher(splitString[i])
                     .results()
                     .map(MatchResult::group)
-                    .mapToInt(Integer::parseInt)
+                    .mapToLong(Long::parseLong)
                     .toArray();
             System.out.println(Arrays.toString(arr));
             almanac.add(arr);
         }
 
-        for (int[] map : almanac) {
-            destinationToSourceMap3(map, initialSeeds);
+        for (long[] map : almanac) {
+            destinationToSource(map, initialSeeds);
         }
 
-        for (int location : initialSeeds) {
+        for (long location : initialSeeds) {
             if (location < minLocation) {
                 minLocation = location;
             }
@@ -74,39 +73,22 @@ public class Day_5_Seeds {
         return minLocation;
     }
 
-    public static void destinationToSourceMap3(int[] map, int[] sourceMap) {
-        for (int i = 0; i < map.length; i+=3) {
-            int sourceStart = map[i+1];
-            int range = map[i+2];
-            System.out.println(sourceStart + " " + range);
-            for (int j = sourceStart; j < (sourceStart + range); j++) {
-                System.out.println(" " + j);
-                int x;
-                if ((x = indexOfSource(j, sourceMap)) > 0) {
-                    sourceMap[x] = (map[i]+(j-sourceStart));
+
+    public static void destinationToSource(long[] map, long[] sourceMap) {
+        for (int i = 0; i < sourceMap.length; i++) {
+            long x = sourceMap[i];
+            for (int j = 0; j < map.length; j+=3) {
+                long destinationStart = map[j];
+                long sourceStart = map[j+1];
+                long range = map[j+2];
+                if (sourceStart <= x && x < (sourceStart + range)) {
+                    long destination = destinationStart + (x - sourceStart);
+                    if (destinationStart <= destination && destination < (destinationStart + range)) {
+                        sourceMap[i] = destination;
+                    }
                 }
             }
         }
-    }
-
-    public static boolean inSource(int x, int[] source) {
-        for (int element : source) {
-            if (x == element) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static int indexOfSource(int x, int[] source) {
-        for (int i = 0; i < source.length; i++) {
-            if (x == source[i]) {
-                return i;
-            }
-        }
-
-        return -1;
     }
 
 }
