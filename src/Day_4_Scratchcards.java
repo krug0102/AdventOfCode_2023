@@ -50,6 +50,17 @@ public class Day_4_Scratchcards {
         return sum;
     }
 
+
+    // Read all cards into a HashMap of ScratchCards
+    // Then, build a tree of ScratchCards, starting from 1, and count the leaf nodes
+    public static int part2(String fileName) {
+        int totalCardsWon = 0;
+
+
+
+        return totalCardsWon;
+    }
+
         public static int cardPoints(int[] winningNumbers, int[] myNumbers) {
             int points = 0;
             for (int i = 0; i < winningNumbers.length; i++) {
@@ -65,5 +76,18 @@ public class Day_4_Scratchcards {
             }
 
         return points;
+        }
+
+
+        public static class ScratchCard {
+            int cardNumber;
+            int matchingNumbers;
+
+            public ScratchCard() {}
+
+            public ScratchCard(int cardNumber) {
+                this.cardNumber = cardNumber;
+            }
+
         }
 }
