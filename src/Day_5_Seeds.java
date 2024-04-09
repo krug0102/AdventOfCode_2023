@@ -112,6 +112,9 @@ public class Day_5_Seeds {
             almanac.add(arr);
         }
 
+
+        // instead of making one large array, create separate smaller arrays for each range of seeds
+        // and find the minLocation for each range.
         for (int i = 0; i < seedRanges.length; i+=2) {
             long seedStart = seedRanges[i];
             long range = seedRanges[i+1];
