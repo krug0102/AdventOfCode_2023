@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.MatchResult;
@@ -16,6 +19,8 @@ public class Day_4_Scratchcards {
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
         System.out.println("The scratchcards are worth " + part1(fileName) + " points");
+
+        System.out.println(part2(fileName));
     }
 
     public static int part1(String fileName) {
@@ -55,7 +60,40 @@ public class Day_4_Scratchcards {
     // Then, build a tree of ScratchCards, starting from 1, and count the leaf nodes
     public static int part2(String fileName) {
         int totalCardsWon = 0;
+        HashMap<Integer, ScratchCard> scratchCards = new HashMap<>();
 
+        try {
+            File input = new File(fileName);
+            Scanner reader = new Scanner(input);
+
+            while (reader.hasNextLine()) {
+                String[] line = reader.nextLine().split(":");
+                System.out.println(Arrays.toString(line));
+                String[] numbers = line[1].split("\\|");
+                int[] winningNumbers = Pattern.compile("(\\d+)")
+                        .matcher(numbers[0])
+                        .results()
+                        .map(MatchResult::group)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                int[] myNumbers = Pattern.compile("(\\d+)")
+                        .matcher(numbers[1])
+                        .results()
+                        .map(MatchResult::group)
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+
+                int cardNumber = Integer.parseInt(line[0].replaceAll("[^0-9]", ""));
+                ScratchCard scratchCard = new ScratchCard(cardNumber);
+
+                // call matchingNumbers and update scratchCard
+
+                scratchCards.put(cardNumber, scratchCard);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
 
 
         return totalCardsWon;
@@ -77,6 +115,19 @@ public class Day_4_Scratchcards {
 
         return points;
         }
+
+    public static int matchingNumbers(int[] winningNumbers, int[] myNumbers) {
+        int matches = 0;
+        for (int i = 0; i < winningNumbers.length; i++) {
+            for (int j = 0; j < myNumbers.length; j++) {
+                if (winningNumbers[i] == myNumbers[j]) {
+                    matches++;
+                }
+            }
+        }
+
+        return matches;
+    }
 
 
         public static class ScratchCard {
