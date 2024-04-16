@@ -52,11 +52,46 @@ public class Day_7_Camel_Cards {
         //hands.sort(new HandComparator());
 
         for (int i = 0; i < hands.size(); i++) {
-            result = result + ((hands.size() - i) * (hands.get(i).bid));
+            result = result + ((i+1) * (hands.get(i).bid));
         }
 
 
         return result;
+    }
+
+    public static int handType(char[] hand) {
+        int handType = 0;
+        HashMap<Character, Integer> cardCount = new HashMap<>();
+        for (int i = 0; i < hand.length; i++) {
+            char c = hand[i];
+            if (!cardCount.containsValue(c)) {
+                cardCount.put(c, 1);
+            } else {
+                Integer x = cardCount.get(c);
+                cardCount.replace(c, x + 1);
+            }
+        }
+
+        if (cardCount.size() == 1) {
+            handType = 1;
+        }
+        // Full House and Four of a Kind have the same number of entries
+        // Full House will have 3 of one and 2 of another
+        // Four of a Kind will have 4 of one and 1 of another
+        if (cardCount.size() == 2) {
+
+        }
+        // Three of a kind and two pair have the same number of entries
+        // Three of a Kind will have 3 of one card, with the other two being different
+        // Two Pair will have 2 of one card, 2 of another, and 1 other card
+        if (cardCount.size() == 3) {
+
+        }
+        if (cardCount.size() == 5) {
+            handType = 5;
+        }
+
+        return handType;
     }
 
 
