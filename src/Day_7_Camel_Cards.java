@@ -16,11 +16,13 @@ public class Day_7_Camel_Cards {
         Scanner s = new Scanner(System.in);
 
         String fileName = s.nextLine();
-        System.out.println("The total winnings of the provided hands is: " + totalWinnings(fileName));
+        System.out.println("Part 1: \nThe total winnings of the provided hands is: " + part1(fileName));
+
+        System.out.println("Part 2: \nThe total winnings of the provided hands is: " + part2(fileName));
     }
 
 
-    public static int totalWinnings(String fileName) {
+    public static int part1(String fileName) {
         int result = 0;
         ArrayList<CamelCardHand> hands = new ArrayList<>();
 
@@ -111,17 +113,160 @@ public class Day_7_Camel_Cards {
         return handType;
     }
 
+    public static int part2(String fileName) {
+        int result = 0;
+        ArrayList<CamelCardHand> hands = new ArrayList<>();
+
+        try {
+            File CamelCardHands = new File(fileName);
+            Scanner reader = new Scanner(CamelCardHands);
+
+            while (reader.hasNextLine()) {
+                String line = reader.nextLine();
+                Matcher m = p.matcher(line);
+                if (m.find()) {
+                    char[] charArray = m.group(1).toCharArray();
+                    int bid = Integer.parseInt(m.group(2));
+
+                    Card[] cards = new Card[5];
+
+                    for (int i = 0; i < charArray.length; i++) {
+                        Card x = new Card();
+                        x.cardNumber = charArray[i];
+                        x.cardStrength = cardValueJoker(charArray[i]);
+                        cards[i] = x;
+                    }
+
+                    int handType = handTypeJoker(cards);
+
+                    hands.add(new CamelCardHand(cards, bid, handType));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        }
+
+        hands.sort(new HandComparator());
+
+        for (int i = 0; i < hands.size(); i++) {
+            result = result + ((i+1) * (hands.get(i).bid));
+        }
+
+
+        return result;
+    }
+
+    public static int handTypeJoker(Card[] hand) {
+        int handType = 0;
+        HashMap<Integer, Integer> cardCount = new HashMap<>();
+        for (int i = 0; i < hand.length; i++) {
+            Card c = hand[i];
+            if (!cardCount.containsKey(c.cardStrength)) {
+                cardCount.put(c.cardStrength, 1);
+            } else {
+                Integer x = cardCount.get(c.cardStrength);
+                cardCount.replace(c.cardStrength, x + 1);
+            }
+        }
+
+        if (cardCount.containsKey(1)) {
+            int jokers = cardCount.get(1);
+            int[] highestCard = new int[2];
+            for (Map.Entry<Integer, Integer> e : cardCount.entrySet()) {
+                if (highestCard[0] < e.getKey()) {
+                    highestCard[0] = e.getKey();
+                    highestCard[1] = e.getValue();
+                }
+            }
+        }
+
+        return handType;
+    }
+
+    //TODO: Will have to update the compare method
+    public static int cardValueJoker(char c) {
+        int result = 0;
+        switch (c) {
+            case 'A':
+                result = 13;
+                break;
+            case 'K':
+                result = 12;
+                break;
+            case 'Q':
+                result = 11;
+                break;
+            case 'T':
+                result = 10;
+                break;
+            case '9':
+                result = 9;
+                break;
+            case '8':
+                result = 8;
+                break;
+            case '7':
+                result = 7;
+                break;
+            case '6':
+                result = 6;
+                break;
+            case '5':
+                result = 5;
+                break;
+            case '4':
+                result = 4;
+                break;
+            case '3':
+                result = 3;
+                break;
+            case '2':
+                result = 2;
+                break;
+            case 'J':
+                result = 1;
+                break;
+        }
+        return result;
+    }
+
+
+
+
+
+    // TODO:  Could make a Card class which stores the character and the value of the card.
+    public static class Card {
+        char cardNumber;
+        int cardStrength;
+        public Card() {}
+
+        public Card(char number, int value) {
+            this.cardNumber = number;
+            this.cardStrength = value;
+        }
+    }
+
+
+
 
     public static class CamelCardHand {
         char[] cards;
         int bid;
         int handType;
 
+        Card[] cards2;
+
 
         public CamelCardHand() {}
 
         public CamelCardHand(char[] cards, int bid, int handType) {
             this.cards = cards;
+            this.bid = bid;
+            this.handType = handType;
+        }
+
+        public CamelCardHand(Card[] cards, int bid, int handType) {
+            this.cards2 = cards;
             this.bid = bid;
             this.handType = handType;
         }
@@ -205,5 +350,6 @@ public class Day_7_Camel_Cards {
             }
             return result;
         }
+
     }
 }
