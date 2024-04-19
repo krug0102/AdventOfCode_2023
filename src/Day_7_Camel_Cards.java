@@ -138,7 +138,11 @@ public class Day_7_Camel_Cards {
             System.out.println(e);
         }
 
+        System.out.println(hands);
+
         hands.sort(new JokerHandComparator());
+
+        System.out.println(hands);
 
         for (int i = 0; i < hands.size(); i++) {
             result = result + ((i+1) * (hands.get(i).bid));
@@ -152,9 +156,8 @@ public class Day_7_Camel_Cards {
         char highestCard = 0;
         char mostFrequentCard = 0;
         HashMap<Character, Integer> cardCount = new HashMap<>();
-        char[] hand = j.cards;
-        for (int i = 0; i < hand.length; i++) {
-            char c = hand[i];
+        for (int i = 0; i < j.cards.length; i++) {
+            char c = j.cards[i];
             if (!cardCount.containsKey(c)) {
                 cardCount.put(c, 1);
             } else {
@@ -184,44 +187,41 @@ public class Day_7_Camel_Cards {
                 }
             }
 
-            // TODO: Can take this logic to fill the jokerHand into its own function that takes
-            // the original and the character to replace 'J' with.
+
             if (highestCard == mostFrequentCard) {
                 for (int i = 0; i < jokerHand.length; i++) {
-                    char c = hand[i];
+                    char c = j.cards[i];
                     if (c == 'J') {
                         jokerHand[i] = highestCard;
                     } else {
                         jokerHand[i] = c;
                     }
                 }
-                j.handType = handType(jokerHand);
-                j.jokerHand = jokerHand;
             } else {
+                char[] bestHand = new char[5];
+                for (Map.Entry<Character, Integer> e : cardCount.entrySet()) {
+                    char c = e.getKey();
 
-                //TODO: Gets the right answer for the test case, but answer is too low on read input.
-                // This is due to not considering all possible combinations for the "hand" with joker replacement
-                if (cardCount.get(highestCard) > cardCount.get(mostFrequentCard)) {
-                    for (int i = 0; i < jokerHand.length; i++) {
-                        char c = hand[i];
-                        if (c == 'J') {
-                            jokerHand[i] = highestCard;
+                    if (c != 'J') {
+                        for (int i = 0; i < j.cards.length; i++) {
+                            if (j.cards[i] == 'J') {
+                                jokerHand[i] = c;
+                            } else {
+                                jokerHand[i] = j.cards[i];
+                            }
                         }
                     }
-                    j.handType = handType(jokerHand);
-                    j.jokerHand = jokerHand;
-                }
-                if (cardCount.get(highestCard) < cardCount.get(mostFrequentCard)) {
-                    for (int i = 0; i < jokerHand.length; i++) {
-                        char c = hand[i];
-                        if (c == 'J') {
-                            jokerHand[i] = mostFrequentCard;
-                        }
+
+                    if (handType(jokerHand) < handType(bestHand)) {
+                        bestHand = jokerHand;
                     }
-                    j.handType = handType(jokerHand);
-                    j.jokerHand = jokerHand;
                 }
             }
+            j.handType = handType(jokerHand);
+            j.jokerHand = jokerHand;
+        } else {
+            j.jokerHand = j.cards;
+            j.handType = handType(j.cards);
         }
     }
 
@@ -290,14 +290,16 @@ public class Day_7_Camel_Cards {
             this.handType = handType;
             this.jokerHand = jokerHand;
         }
+
+        public String toString() {
+            String cards = new String(this.cards);
+            String jokerCards = new String(this.jokerHand);
+            return "Hand: " + cards + " Joker Hand: " + jokerCards + " Bid: " + this.bid + " Hand Type: " + this.handType;
+        }
     }
 
     public static class JokerHandComparator implements Comparator<JokerHand> {
 
-        /*
-            TODO: The 'if' statements are weird, since I have made it so that the "higher" the 'handType',
-             the worse the hand, and I want the worse hands to come first in the sorted list
-         */
         @Override
         public int compare(JokerHand o1, JokerHand o2) {
             if (o1.handType > o2.handType) {
