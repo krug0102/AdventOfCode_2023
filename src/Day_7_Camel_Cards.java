@@ -128,6 +128,7 @@ public class Day_7_Camel_Cards {
                     JokerHand j = new JokerHand();
                     j.cards = m.group(1).toCharArray();
                     j.bid = Integer.parseInt(m.group(2));
+                    j.handType = Integer.MAX_VALUE;
 
                     handTypeJoker(j);
 
@@ -138,11 +139,7 @@ public class Day_7_Camel_Cards {
             System.out.println(e);
         }
 
-        System.out.println(hands);
-
         hands.sort(new JokerHandComparator());
-
-        System.out.println(hands);
 
         for (int i = 0; i < hands.size(); i++) {
             result = result + ((i+1) * (hands.get(i).bid));
@@ -153,8 +150,6 @@ public class Day_7_Camel_Cards {
     }
 
     public static void handTypeJoker(JokerHand j) {
-        char highestCard = 0;
-        char mostFrequentCard = 0;
         HashMap<Character, Integer> cardCount = new HashMap<>();
         for (int i = 0; i < j.cards.length; i++) {
             char c = j.cards[i];
@@ -164,65 +159,32 @@ public class Day_7_Camel_Cards {
                 int x = cardCount.get(c);
                 cardCount.put(c, x+1);
             }
-
-            if (highestCard == 0) {
-                highestCard = c;
-            } else {
-                if (cardValueJoker(highestCard) < cardValueJoker(c)) {
-                    highestCard = c;
-                }
-            }
         }
 
         if (cardCount.containsKey('J')) {
             char[] jokerHand = new char[5];
 
             for (Map.Entry<Character, Integer> e : cardCount.entrySet()) {
-                if (mostFrequentCard == 0) {
-                    mostFrequentCard = e.getKey();
-                } else {
-                    if (e.getValue() > cardCount.get(mostFrequentCard)) {
-                        mostFrequentCard = e.getKey();
-                    }
-                }
-            }
-
-
-            if (highestCard == mostFrequentCard) {
-                for (int i = 0; i < jokerHand.length; i++) {
-                    char c = j.cards[i];
-                    if (c == 'J') {
-                        jokerHand[i] = highestCard;
-                    } else {
-                        jokerHand[i] = c;
-                    }
-                }
-            } else {
-                char[] bestHand = new char[5];
-                for (Map.Entry<Character, Integer> e : cardCount.entrySet()) {
-                    char c = e.getKey();
-
-                    if (c != 'J') {
-                        for (int i = 0; i < j.cards.length; i++) {
-                            if (j.cards[i] == 'J') {
-                                jokerHand[i] = c;
-                            } else {
-                                jokerHand[i] = j.cards[i];
-                            }
+                char c = e.getKey();
+                if (c != 'J') {
+                    for (int i = 0; i < jokerHand.length; i++) {
+                        if (j.cards[i] == 'J') {
+                            jokerHand[i] = c;
+                        } else {
+                            jokerHand[i] = j.cards[i];
                         }
                     }
+                }
 
-                    if (handType(jokerHand) < handType(bestHand)) {
-                        bestHand = jokerHand;
-                    }
+                int handType = handType(jokerHand);
+                if (handType < j.handType) {
+                    j.handType = handType;
                 }
             }
-            j.handType = handType(jokerHand);
-            j.jokerHand = jokerHand;
         } else {
-            j.jokerHand = j.cards;
             j.handType = handType(j.cards);
         }
+
     }
 
     //TODO: Will have to update the compare method
@@ -277,7 +239,6 @@ public class Day_7_Camel_Cards {
         int handType;
         int bid;
         char[] cards;
-        char[] jokerHand;
 
         public JokerHand() {}
 
@@ -288,13 +249,11 @@ public class Day_7_Camel_Cards {
 
         public JokerHand(int handType, char[] jokerHand) {
             this.handType = handType;
-            this.jokerHand = jokerHand;
         }
 
         public String toString() {
             String cards = new String(this.cards);
-            String jokerCards = new String(this.jokerHand);
-            return "Hand: " + cards + " Joker Hand: " + jokerCards + " Bid: " + this.bid + " Hand Type: " + this.handType;
+            return "Hand: " + cards + " Bid: " + this.bid + " Hand Type: " + this.handType;
         }
     }
 
@@ -302,10 +261,10 @@ public class Day_7_Camel_Cards {
 
         @Override
         public int compare(JokerHand o1, JokerHand o2) {
-            if (o1.handType > o2.handType) {
+            if (o1.handType < o2.handType) {
                 return 1;
             }
-            if (o1.handType < o2.handType) {
+            if (o1.handType > o2.handType) {
                 return -1;
             } else {
                 for (int i = 0; i < o1.cards.length; i++) {
