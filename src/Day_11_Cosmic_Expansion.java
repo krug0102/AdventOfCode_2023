@@ -126,7 +126,7 @@ public class Day_11_Cosmic_Expansion {
         long sum = 0;
         long row = 0;
         long columns = 0;
-        long offset = 1000000;
+        long offset = 999999;
 
         ArrayList<Long[]> galaxies = new ArrayList<>();
         ArrayList<Long> emptyRows = new ArrayList<>();
@@ -152,11 +152,11 @@ public class Day_11_Cosmic_Expansion {
                             galaxy[1] = (long) i;   // Column
                             galaxies.add(galaxy);
                         }
-                        row++;
                     }
                 } else {
                     emptyRows.add(row);
                 }
+                row++;
             }
 
 
@@ -164,10 +164,11 @@ public class Day_11_Cosmic_Expansion {
             System.out.println(e);
         }
 
+
         for (int i = 0; i < columns; i++) {
             boolean empty = true;
             for (int j = 0; j < galaxies.size(); j++) {
-                if (galaxies.get(j)[1] == '#') {
+                if (galaxies.get(j)[1] == i) {
                     empty = false;
                     break;
                 }
@@ -178,9 +179,9 @@ public class Day_11_Cosmic_Expansion {
             }
         }
 
-        for (int i = 0; i < galaxies.size(); i++) {
-            System.out.println(Arrays.toString(galaxies.get(i)));
-        }
+//        for (int i = 0; i < galaxies.size(); i++) {
+//            System.out.println(Arrays.toString(galaxies.get(i)));
+//        }
 
         for (int i = 0; i < galaxies.size(); i++) {
             long additionalRows = 0;
@@ -200,12 +201,12 @@ public class Day_11_Cosmic_Expansion {
             galaxy[1] += additionalColumns;
         }
 
-        System.out.println("Empty Rows: " + emptyRows);
-        System.out.println("Empty Columns: " + emptyColumns);
-
-        for (int i = 0; i < galaxies.size(); i++) {
-            System.out.println(Arrays.toString(galaxies.get(i)));
-        }
+//        System.out.println("Empty Rows: " + emptyRows);
+//        System.out.println("Empty Columns: " + emptyColumns);
+//
+//        for (int i = 0; i < galaxies.size(); i++) {
+//            System.out.println(Arrays.toString(galaxies.get(i)));
+//        }
 
 
 
