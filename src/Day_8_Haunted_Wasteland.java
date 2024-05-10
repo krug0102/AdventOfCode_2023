@@ -16,7 +16,7 @@ public class Day_8_Haunted_Wasteland {
         System.out.println("Please provide the desert maps.");
         Scanner s = new Scanner(System.in);
         String fileName = s.nextLine();
-        System.out.println("Starting from AAA, it takes " + part1(fileName) + " steps to reach ZZZ.");
+        ///System.out.println("Starting from AAA, it takes " + part1(fileName) + " steps to reach ZZZ.");
 
         System.out.println("Starting from all nodes that end with 'A', it takes " + part2(fileName) + " steps to reach nodes that end with 'Z'.");
     }
@@ -86,6 +86,7 @@ public class Day_8_Haunted_Wasteland {
                 String line = reader.nextLine();
                 if (firstLine) {
                     char[] x = line.toCharArray();
+                    System.out.println(x.length);
                     for (char c : x) {
                         directions.add(c);
                     }
@@ -108,14 +109,23 @@ public class Day_8_Haunted_Wasteland {
             System.out.println(e);
         }
 
+
         int steps = 0;
+
+//        for (Map.Entry<String, Node> e : nodes.entrySet()) {
+//            System.out.println(e.getValue().toString());
+//        }
 
         while (!allNodesEndZ(startingNodes)) {
             if (directions.get(steps % directions.size()) == 'L') {
-                startingNodes.replaceAll(node -> nodes.get(node.leftChild));
+                for (int i = 0; i < startingNodes.size(); i++) {
+                    startingNodes.set(i, nodes.get(startingNodes.get(i).leftChild));
+                }
             }
             if (directions.get(steps % directions.size()) == 'R') {
-                startingNodes.replaceAll(node -> nodes.get(node.rightChild));
+                for (int i = 0; i < startingNodes.size(); i++) {
+                    startingNodes.set(i, nodes.get(startingNodes.get(i).rightChild));
+                }
             }
             steps++;
         }
