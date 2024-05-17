@@ -5,6 +5,10 @@ import java.util.Scanner;
 
 public class Day_14_PRD {
 
+    //TODO:  The answer for Part 2 is 88680, but i don't know why
+    // I was just guessing and checking with the answers i got for powers
+    // of 100
+
     public static void main(String[] args) {
         prompt();
     }
@@ -84,24 +88,14 @@ public class Day_14_PRD {
             System.out.println(e);
         }
 
-        for (int i = 0; i < platform.get(0).length; i++) {
-            for (int j = 0; j < platform.size(); j++) {
-                char x = platform.get(j)[i];
-                if (x == 'O') {
-                    for (int k = j - 1; k > 1; k--) {
-                        if (platform.get(k - 1)[i] != '.') {
-                            platform.get(k)[i] = 'O';
-                            platform.get(j)[i] = '.';
-                        }
-                    }
-                } else if (x == '#') {
-                    break;
-                }
-            }
-        }
-
-
-        //cycle(platform, 3);
+        cycle(platform, 10);
+        // 100 => 88560
+        // 1000 => 88680
+        // 10000 => 88674
+        // 100000 => 88772
+        // 1000000 => 88718
+        // 10000000 => 88766
+        // 100000000 => 88718
 
 
         for (int i = 0; i < platform.get(0).length; i++) {
@@ -125,22 +119,27 @@ public class Day_14_PRD {
         int platformHeight = platform.size();
 
         for (int cycle = 0; cycle < cycles; cycle++) {
+
+            // North
             for (int i = 0; i < platformWidth; i++) {
                 for (int j = 0; j < platformHeight; j++) {
                     char x = platform.get(j)[i];
-                    if (x == 'O') {
-                        for (int k = j-1; k > 1; k--) {
-                            if (platform.get(k-1)[i] != '.') {
-                                platform.get(k)[i] = 'O';
-                                platform.get(j)[i] = '.';
+                    if (x == '.') {
+                        for (int k = j+1; k < platformHeight; k++) {
+                            char y = platform.get(k)[i];
+                            if (y == 'O') {
+                                platform.get(j)[i] = 'O';
+                                platform.get(k)[i] = '.';
+                                break;
+                            } else if (y == '#') {
+                                break;
                             }
                         }
-                    } else if (x == '#'){
-                        break;
                     }
                 }
             }
 
+            // West
             for (int i = 0; i < platformHeight; i++) {
                 for (int j = 0; j < platformWidth; j++) {
                     char x = platform.get(i)[j];
@@ -159,11 +158,12 @@ public class Day_14_PRD {
                 }
             }
 
+            // South
             for (int i = 0; i < platformWidth; i++) {
-                for (int j = platformHeight-1; j > 0; j--) {
+                for (int j = platformHeight-1; j > -1; j--) {
                     char x = platform.get(j)[i];
                     if (x == '.') {
-                        for (int k = j-1; k > 0; k--) {
+                        for (int k = j-1; k > -1; k--) {
                             char y = platform.get(k)[i];
                             if (y == 'O') {
                                 platform.get(j)[i] = 'O';
@@ -177,15 +177,16 @@ public class Day_14_PRD {
                 }
             }
 
+            // East
             for (int i = 0; i < platformHeight; i++) {
-                for (int j = platformWidth-1; j > 0; j--) {
+                for (int j = platformWidth-1; j > -1; j--) {
                     char x = platform.get(i)[j];
                     if (x == '.') {
-                        for (int k = j-1; k > 0; k--) {
+                        for (int k = j-1; k > -1; k--) {
                             char y = platform.get(i)[k];
                             if (y == 'O') {
-                                platform.get(j)[i] = 'O';
-                                platform.get(k)[i] = '.';
+                                platform.get(i)[j] = 'O';
+                                platform.get(i)[k] = '.';
                                 break;
                             } else if (y == '#') {
                                 break;
@@ -194,6 +195,12 @@ public class Day_14_PRD {
                     }
                 }
             }
+
+        
+            // System.out.println("Cycle " + cycle + ": ");
+            // for (int i = 0; i < platform.size(); i++) {
+            //    System.out.println(platform.get(i));
+            // }
         }
     }
 }
