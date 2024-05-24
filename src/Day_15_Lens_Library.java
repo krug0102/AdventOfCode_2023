@@ -73,8 +73,7 @@ public class Day_15_Lens_Library {
                         } else {
                             int x = replaceLens(newLens, initSequence.get(hash));
                             if (x != -1) {
-                                initSequence.get(hash).remove(x);
-                                initSequence.get(hash).add(newLens);
+                                initSequence.get(hash).set(x, newLens);
                             } else {
                                 initSequence.get(hash).add(newLens);
                             }
@@ -98,8 +97,10 @@ public class Day_15_Lens_Library {
 
         for (Map.Entry<Integer, ArrayList<Lens>> entry : initSequence.entrySet()) {
             System.out.println(entry.getKey());
-            for (int i = 0; i < entry.getValue().size(); i++) {
+            ArrayList<Lens> l = entry.getValue();
+            for (int i = 0; i < l.size(); i++) {
                 System.out.println(entry.getValue().get(i));
+                result += (entry.getKey() + 1) * (i+1) * (l.get(i).focalLength);
             }
         }
 
