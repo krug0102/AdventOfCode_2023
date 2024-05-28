@@ -112,10 +112,8 @@ public class Day_15_Lens_Library {
         int index = -1;
         for (int i = 0; i < l.size(); i++) {
             if (l.get(i).name.equals(newLens.name)) {
-                if (l.get(i).focalLength > newLens.focalLength) {
-                    index = i;
-                    break;
-                }
+                index = i;
+                break;
             }
         }
 
