@@ -20,59 +20,46 @@ public class Day_13_Point_of_Incidence {
 
     public static int part1(String fileName) {
         int result = 0;
+        ArrayList<String> pattern = new ArrayList<>();
 
         try {
             File inputFile = new File(fileName);
             Scanner reader = new Scanner(inputFile);
 
-            ArrayList<String> pattern = new ArrayList<>();
-            ArrayList<Integer> verticalSymmetries = new ArrayList<>();
-
             while (reader.hasNextLine()) {
-                System.out.println(reader.hasNextLine());
                 String s = reader.nextLine();
                 char[] line = s.toCharArray();
+                int verticalSymmetry = -1;
+
                 if (line.length != 0) {
                     // check for vertical symmetry
+                    // TODO: Do this after reading all lines into the pattern
+                    System.out.println(line);
+                    for (int i = 0; i < line.length; i++) {
+                        char[] x = new char[line.length - i];
+                        for (int j = 0; j < x.length; j++) {
+                            x[j] = line[j+i];
+                        }
+                        if (isVerticallySymmetric(x)) {
+                            verticalSymmetry = (x.length/2) + i;
+                            break;
+                        }
+                    }
+                    
+                    System.out.println(verticalSymmetry);
+
                     pattern.add(s);
-
                 } else {
-                    int LOS = 0;
-                    // check for horizontal symmetry
                     for (int i = 0; i < pattern.size(); i++) {
-                        for (int j = pattern.size() - 1; j > i; j--) {
-                            if (pattern.get(i).equals(pattern.get(j))) {
-                                LOS = Math.max(LOS, j-i);
-                            } else {
-                            }
-                        }
-
-//                            if (LOS % 2 == 0) {
-//                                result += ((LOS / 2) * 100);
-//                            } else {
-//                                result += (((LOS / 2) + 1) * 100);
-//                            }
+                        System.out.println(pattern.get(i));
                     }
-
-                    // check for vertical symmetry
-                    for (int i = 0; i < pattern.size(); i++) {
-                        char[] l = pattern.get(i).toCharArray();
-                        for (int k = 0; k < l.length; k++) {
-                            for (int j = l.length - 1; j > i; j--) {
-                                if (l[k] != l[j]) {
-
-                                }
-                            }
-                        }
-
-
-                    }
-
-
                     pattern = new ArrayList<>();
                 }
             }
 
+            for (int i = 0; i < pattern.size(); i++) {
+                System.out.println(pattern.get(i));
+            }
 
             result = pattern.size();
 
@@ -85,30 +72,29 @@ public class Day_13_Point_of_Incidence {
     }
 
     /*
-        For row 1, iterate through a for loop
-            for (int i = 0; i < row.length; i++) {
-                if (row[i] == row[(row.length - 1) - i] {
-                    do something
-                }
-            }
+     * int i = 0;
+                    int end = line.length - 1;
+                    while (i < end) {  // TODO: Infinite loop when i isn't incremented
+                        if (line[i] == line[end]) {
+                            i++;
+                            end--;
+                        } else {
+                            i++;
+                            end = line.length - 1;
+                        }
+                    }
+
+                    System.out.println(i);
      */
 
-    public static class Tuple {
-        int a;
-        int b;
 
-        public Tuple() {}
-
-        public Tuple(int a, int b) {
-            this.a = a;
-            this.b = b;
+    public static boolean isVerticallySymmetric(char[] arr) {
+        for (int i = 0; i < arr.length/2; i++) {
+            if (arr[i] != arr[(arr.length - 1) - i]) {
+                return false;
+            }
         }
 
-
-
-
-
+        return true;
     }
-
-
 }
